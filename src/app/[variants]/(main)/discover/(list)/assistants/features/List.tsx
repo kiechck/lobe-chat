@@ -59,7 +59,23 @@ const List = memo<ListProps>(({ category, mobile, searchKeywords, items = [] }) 
 
   return (
     <>
-      <Title>{t('assistants.recentSubmits')}</Title>
+      <VirtuosoGridList
+        data={all}
+        initialItemCount={12}
+        itemContent={(_, item) => (
+          <Card
+            href={urlJoin('/discover/assistant/', item.identifier)}
+            key={item.identifier}
+            showCategory={!category}
+            variant={'default'}
+            {...item}
+          />
+        )}
+        style={{
+          minHeight: '75vh',
+        }}
+      />
+      {/* <Title>{t('assistants.recentSubmits')}</Title>
       <Grid maxItemWidth={280} rows={4}>
         {recent.map((item) => (
           <Card
@@ -90,7 +106,7 @@ const List = memo<ListProps>(({ category, mobile, searchKeywords, items = [] }) 
             }}
           />
         </>
-      )}
+      )} */}
     </>
   );
 });

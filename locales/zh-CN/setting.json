@@ -149,6 +149,16 @@
       "placeholder": "请输入角色 Prompt 提示词",
       "title": "角色设定"
     },
+    "roleFirstMsgs": {
+      "placeholder": "请输入角色开场白",
+      "title": "AI开场白",
+      "addNew": "+ 添加新的开场白",
+      "empty": "点击下方按钮添加第一个开场白",
+      "save": "保存",
+      "saveSuccess": "保存成功",
+      "saveFailed": "保存失败",
+      "closeConfirm": "您的修改未保存，确定取消保存吗？"
+    },
     "tag": {
       "placeholder": "请输入标签",
       "title": "标签"

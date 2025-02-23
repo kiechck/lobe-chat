@@ -129,7 +129,7 @@ const AssistantCard = memo<AssistantCardProps>(
                   {isCompact && user}
                 </Flexbox>
 
-                {isCompact ? (
+                {/* {isCompact ? (
                   <Avatar avatar={avatar} size={40} style={{ display: 'block' }} title={title} />
                 ) : (
                   <Center
@@ -146,15 +146,15 @@ const AssistantCard = memo<AssistantCardProps>(
                   >
                     <Avatar avatar={avatar} size={56} style={{ display: 'block' }} title={title} />
                   </Center>
-                )}
+                )} */}
               </Flexbox>
 
               {!isCompact && (
                 <Flexbox gap={8} horizontal style={{ fontSize: 12 }}>
                   {user}
-                  <time className={styles.time} dateTime={new Date(createdAt).toISOString()}>
+                  {/* <time className={styles.time} dateTime={new Date(createdAt).toISOString()}>
                     {createdAt}
-                  </time>
+                  </time> */}
                 </Flexbox>
               )}
               <Paragraph className={styles.desc} ellipsis={{ rows: 2 }}>

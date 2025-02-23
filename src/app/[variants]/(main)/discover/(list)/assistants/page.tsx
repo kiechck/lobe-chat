@@ -3,6 +3,7 @@ import { Locales } from '@/locales/resources';
 import { ldModule } from '@/server/ld';
 import { metadataModule } from '@/server/metadata';
 import { DiscoverService } from '@/server/services/discover';
+import { AssistantService } from '@/server/services/assistant';
 import { translation } from '@/server/translation';
 import { DynamicLayoutProps } from '@/types/next';
 import { RouteVariants } from '@/utils/server/routeVariants';
@@ -37,8 +38,8 @@ export const generateMetadata = async (props: DiscoverPageProps) => {
 
 const Page = async (props: DiscoverPageProps) => {
   const { locale, t, isMobile } = await getSharedProps(props);
-  const discoverService = new DiscoverService();
-  const items = await discoverService.getAssistantList(locale);
+  const assistantService = new AssistantService();
+  const items = await assistantService.getAssistantList();
 
   const ld = ldModule.generate({
     description: t('discover.assistants.description'),

@@ -33,6 +33,7 @@ export const DEFAULT_AGENT_CONFIG: LobeAgentConfig = {
   },
   plugins: [],
   provider: ModelProvider.OpenAI,
+  roleFirstMsgs: [],
   systemRole: '',
   tts: DEFAUTT_AGENT_TTS_CONFIG,
 };

@@ -1,5 +1,6 @@
 import { Locales } from '@/locales/resources';
 import { DiscoverService } from '@/server/services/discover';
+import { AssistantService } from '@/server/services/assistant';
 
 import Back from '../../(detail)/features/Back';
 import List from '../../(list)/assistants/features/List';
@@ -13,8 +14,8 @@ const AssistantsResult = async ({
   mobile?: boolean;
   q: string;
 }) => {
-  const discoverService = new DiscoverService();
-  const items = await discoverService.searchAssistant(locale, q);
+  const assistantService = new AssistantService();
+  const items = await assistantService.searchAssistant(q);
 
   return (
     <>

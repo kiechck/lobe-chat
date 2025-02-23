@@ -3,6 +3,7 @@ import { Locales } from '@/locales/resources';
 import { ldModule } from '@/server/ld';
 import { metadataModule } from '@/server/metadata';
 import { DiscoverService } from '@/server/services/discover';
+import { AssistantService } from '@/server/services/assistant';
 import { translation } from '@/server/translation';
 import { DynamicLayoutProps } from '@/types/next';
 import { RouteVariants } from '@/utils/server/routeVariants';
@@ -47,8 +48,9 @@ const Page = async (props: DiscoverPageProps) => {
     },
   });
 
+  const assistantService = new AssistantService();
+  const assistantList = await assistantService.getAssistantList();
   const discoverService = new DiscoverService();
-  const assistantList = await discoverService.getAssistantList(locale);
   const pluginList = await discoverService.getPluginList(locale);
   const modelList = await discoverService.getModelList(locale);
 

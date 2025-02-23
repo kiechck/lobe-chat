@@ -9,14 +9,22 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     overflow: hidden;
 
-    height: 64px;
-    margin-block-end: -56px;
+    height: 264px;
+    width: 100%;
+    // margin-block-end: -56px;
+    margin-block-end: -26px;
 
     background: ${token.colorFillSecondary};
   `,
   bannerImg: css`
     position: absolute;
-    filter: blur(40px) saturate(1.5);
+    // filter: blur(40px) saturate(1.5);
+    object-fit: cover;
+    object-position: top;
+    top: 0;
+    left: 0;
+    width: 100% !important; // 强制覆盖行内样式
+    height: 100% !important;
   `,
 }));
 

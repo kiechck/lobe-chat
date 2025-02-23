@@ -10,6 +10,7 @@ import { Flexbox } from 'react-layout-kit';
 import { FORM_STYLE } from '@/const/layoutTokens';
 
 import { useStore } from '../store';
+import AgentRoleFirstMsg from './AgentRoleFirstMsg';
 
 export const useStyles = createStyles(({ css, token, responsive }) => ({
   container: css`
@@ -46,6 +47,7 @@ const AgentPrompt = memo<{ modal?: boolean }>(({ modal }) => {
     s.setAgentConfig,
   ]);
 
+  // 加载中 骨架屏
   if (loading) {
     if (modal)
       return (
@@ -171,6 +173,9 @@ const AgentPrompt = memo<{ modal?: boolean }>(({ modal }) => {
           {content}
         </Flexbox>
       </Flexbox>
+      <div style={{ marginTop: 18 }}>
+        <AgentRoleFirstMsg />
+      </div>
     </div>
   );
 });

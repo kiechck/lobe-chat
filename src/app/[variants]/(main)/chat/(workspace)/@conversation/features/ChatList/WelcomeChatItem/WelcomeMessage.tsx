@@ -31,11 +31,24 @@ const WelcomeMessage = () => {
     url: `/chat/settings?session=${activeId}`,
   });
 
+  // ai开场白
+  const roleFirstMsgs = useAgentStore((s) => {
+    const config = agentSelectors.currentAgentConfig(s);
+    return config.roleFirstMsgs || [];
+  });
+  let msg = agentMsg;
+  if (roleFirstMsgs.length > 0) {
+    msg = roleFirstMsgs[0];
+  } else if (!!meta.description) {
+    msg = agentSystemRoleMsg;
+  }
+
   return (
     <ChatItem
       avatar={meta}
       editing={false}
-      message={!!meta.description ? agentSystemRoleMsg : agentMsg}
+      // message={!!meta.description ? agentSystemRoleMsg : agentMsg}
+      message={ msg }
       placement={'left'}
       type={type === 'chat' ? 'block' : 'pure'}
     />

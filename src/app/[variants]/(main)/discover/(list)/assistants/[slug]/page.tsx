@@ -4,6 +4,7 @@ import StructuredData from '@/components/StructuredData';
 import { ldModule } from '@/server/ld';
 import { metadataModule } from '@/server/metadata';
 import { DiscoverService } from '@/server/services/discover';
+import { AssistantService } from '@/server/services/assistant';
 import { translation } from '@/server/translation';
 import { AssistantCategory, DiscoverPageProps } from '@/types/discover';
 import { RouteVariants } from '@/utils/server/routeVariants';
@@ -41,8 +42,8 @@ export const generateMetadata = async (props: DiscoverPageProps) => {
 const Page = async (props: DiscoverPageProps<AssistantCategory>) => {
   const { locale, t, td, category, isMobile } = await getSharedProps(props);
 
-  const discoverService = new DiscoverService();
-  const items = await discoverService.getAssistantCategory(locale, category as AssistantCategory);
+  const assistantService = new AssistantService();
+  const items = await assistantService.getAssistantCategory(category as AssistantCategory);
 
   const ld = ldModule.generate({
     description: t('discover.assistants.description'),

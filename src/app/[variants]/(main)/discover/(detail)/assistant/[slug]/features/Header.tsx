@@ -67,9 +67,9 @@ const Header = memo<HeaderProps>(({ identifier, data, mobile }) => {
                   <span>{data.author}</span>
                 </Flexbox>
               </Link>
-              <time className={styles.time} dateTime={new Date(data.createdAt).toISOString()}>
+              {/* <time className={styles.time} dateTime={new Date(data.createdAt).toISOString()}>
                 {data.createdAt}
-              </time>
+              </time> */}
             </Flexbox>
           </Flexbox>
         </Flexbox>

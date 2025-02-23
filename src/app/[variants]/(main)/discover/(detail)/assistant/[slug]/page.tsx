@@ -5,6 +5,7 @@ import StructuredData from '@/components/StructuredData';
 import { ldModule } from '@/server/ld';
 import { metadataModule } from '@/server/metadata';
 import { DiscoverService } from '@/server/services/discover';
+import { AssistantService } from '@/server/services/assistant';
 import { translation } from '@/server/translation';
 import { DiscoverPageProps, DiscoverPlugintem } from '@/types/discover';
 import { RouteVariants } from '@/utils/server/routeVariants';
@@ -26,11 +27,11 @@ const getSharedProps = async (props: DiscoverPageProps) => {
   const { slug: identifier } = params;
   const { t, locale } = await translation('metadata', searchParams?.hl || hl);
 
-  const discoverService = new DiscoverService();
-  const data = await discoverService.getAssistantById(locale, identifier);
+  const assistantService = new AssistantService();
+  const data = await assistantService.getAssistantById(identifier);
   return {
     data,
-    discoverService,
+    discoverService: new DiscoverService(),
     identifier,
     isMobile,
     locale,

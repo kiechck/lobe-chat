@@ -47,6 +47,7 @@ export interface LobeAgentConfig {
    * 系统角色
    */
   systemRole: string;
+  roleFirstMsgs: string[];
 
   /**
    * 语音服务
