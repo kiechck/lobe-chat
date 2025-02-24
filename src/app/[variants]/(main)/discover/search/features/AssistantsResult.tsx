@@ -9,13 +9,16 @@ const AssistantsResult = async ({
   locale,
   q,
   mobile,
+  category,
 }: {
+  category: string;
   locale: Locales;
   mobile?: boolean;
   q: string;
 }) => {
   const assistantService = new AssistantService();
-  const items = await assistantService.searchAssistant(q);
+  console.log('category', category);
+  const items = await assistantService.searchAssistant(q, category);
 
   return (
     <>

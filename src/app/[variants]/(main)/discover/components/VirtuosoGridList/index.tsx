@@ -36,7 +36,8 @@ const VirtuosoGridList = memo<VirtuosoGridProps<any, any>>(
       <VirtuosoGrid
         components={{
           List: forwardRef<HTMLDivElement, DivProps>((props, ref) => (
-            <Grid gap={16} maxItemWidth={280} ref={ref} rows={rows} {...props} />
+            <Grid gap={16} ref={ref} rows={rows} {...props} />
+            // maxItemWidth={280}
           )),
         }}
         customScrollParent={scrollParent}

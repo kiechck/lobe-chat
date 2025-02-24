@@ -21,6 +21,8 @@ export interface ChatMessageState {
    */
   messagesInit: boolean;
   messagesMap: Record<string, ChatMessage[]>;
+
+  roleFirstMsg?: string;
 }
 
 export const initialMessageState: ChatMessageState = {

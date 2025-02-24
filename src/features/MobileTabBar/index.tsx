@@ -50,7 +50,7 @@ export default memo<Props>(({ className, tabBarKey }) => {
           ),
           key: SidebarTabKey.Discover,
           onClick: () => {
-            router.push('/discover');
+            router.push('/discover/assistant');
           },
           title: t('tab.discover'),
         },

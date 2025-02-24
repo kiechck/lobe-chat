@@ -1,18 +1,15 @@
 import { AssistantModel } from '@/database/server/models/assistant';
-import { AssistantCateModel } from '@/database/server/models/category';
-import { AssistantTagModel } from '@/database/server/models/tag';
 import {
   AssistantCategory,
   DiscoverAssistantItem
 } from '@/types/discover';
 import { serverDB } from '@/database/server';
 
-const revalidate: number = 3600;
 
 export class AssistantService {
   // Assistants
-  searchAssistant = async (keywords: string): Promise<DiscoverAssistantItem[]> => {
-    const assistants = await AssistantModel.search(serverDB, keywords);
+  searchAssistant = async (keywords: string, category: string = ''): Promise<DiscoverAssistantItem[]> => {
+    const assistants = await AssistantModel.search(serverDB, keywords, category);
     return assistants.map((assistant) => this.convertToDiscoverAssistantItem(assistant));
   };
 
@@ -34,7 +31,19 @@ export class AssistantService {
   ): Promise<DiscoverAssistantItem | undefined> => {
     const assistant = await AssistantModel.findById(serverDB, identifier);
     if (!assistant) return undefined;
-    return this.convertToDiscoverAssistantItem(assistant);
+
+    const randomAssistants = await AssistantModel.findRandomByCategoryAndTags(
+      serverDB,
+      assistant.category,
+      assistant.tags
+    );
+    const discoverAssistantItem = this.convertToDiscoverAssistantItem(assistant);
+    // Ensure suggestions is an array and map to the correct type
+    discoverAssistantItem.suggestions = Array.isArray(randomAssistants)
+      ? randomAssistants.map((assistant) => this.convertToDiscoverAssistantItem(assistant))
+      : [];
+
+    return discoverAssistantItem;
   };
 
   getAssistantByIds = async (
@@ -79,6 +88,7 @@ export class AssistantService {
           temperature: assistant.temperature ?? 0.5,
           topP: assistant.topP ?? 1
         },
+        roleFirstMsgs: Array.isArray(assistant.roleFirstMsgs) ? assistant.roleFirstMsgs : [],
         systemRole: assistant.systemRole || '',
         inputTemplate: assistant.inputTemplate || '',
         displayMode: assistant.displayMode === 'docs' ? 'docs' : 'chat'
@@ -102,8 +112,6 @@ export class AssistantService {
       },
       suggestions: [],
 
-      // 覆盖需要特殊处理的字段
-      roleFirstMsgs: Array.isArray(assistant.roleFirstMsgs) ? assistant.roleFirstMsgs : [],
       // 移除与接口冲突的字段（如有必要）
       // ...('id' in assistant && { id: undefined }) // 示例：移除 id 字段
     } as DiscoverAssistantItem; // 类型断言确保兼容性;

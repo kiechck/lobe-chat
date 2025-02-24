@@ -10,7 +10,7 @@ import urlJoin from 'url-join';
 
 import Menu from '@/components/Menu';
 import { useQueryRoute } from '@/hooks/useQueryRoute';
-import { DiscoverTab } from '@/types/discover';
+import { AssistantCategory } from '@/types/discover';
 
 import { useNav } from '../../../features/useNav';
 
@@ -76,10 +76,10 @@ const Nav = memo(() => {
         <Menu
           items={items}
           onClick={({ key }) => {
-            if (key === DiscoverTab.Home) {
-              router.push('/discover');
+            if (key === AssistantCategory.All) {
+              router.push('/discover/assistants');
             } else {
-              router.push(urlJoin('/discover', key));
+              router.push(urlJoin('/discover/assistants', key));
             }
           }}
           selectable

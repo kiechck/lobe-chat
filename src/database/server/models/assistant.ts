@@ -1,7 +1,8 @@
-import { TRPCError } from '@trpc/server';
-import { eq, inArray } from 'drizzle-orm/expressions';
-import { LobeChatDatabase } from '@/database/type';
-import { AssistantItem, NewAssistant, assistant } from '../../schemas';
+import {TRPCError} from '@trpc/server';
+import {eq, inArray} from 'drizzle-orm/expressions';
+import {sql} from 'drizzle-orm';
+import {LobeChatDatabase} from '@/database/type';
+import {assistant, AssistantItem, NewAssistant} from '../../schemas';
 
 export class AssistantNotFoundError extends TRPCError {
   constructor() {
@@ -19,14 +20,13 @@ export class AssistantModel {
   }
 
   getAssistantById = async (): Promise<AssistantItem | undefined> => {
-    const assistant = await this.db.query.assistant.findFirst({ where: eq(assistant.id, this.assistantId) });
-    if (!assistant) throw new AssistantNotFoundError();
-    return assistant;
+    const assistantRecord = await this.db.query.assistant.findFirst({ where: eq(assistant.id, this.assistantId) });
+    if (!assistantRecord) throw new AssistantNotFoundError();
+    return assistantRecord;
   };
 
   getAssistantList = async (): Promise<AssistantItem[]> => {
-    const assistant = await this.db.query.assistant.findMany();
-    return assistant;
+    return await this.db.query.assistant.findMany();
   };
 
   updateAssistant = async (value: Partial<AssistantItem>) => {
@@ -43,11 +43,11 @@ export class AssistantModel {
   // Static methods
 
   static createAssistant = async (db: LobeChatDatabase, params: NewAssistant) => {
-    const [assistant] = await db
+    const [assistantRecord] = await db
       .insert(assistant)
       .values({ ...params })
       .returning();
-    return assistant;
+    return assistantRecord;
   };
 
   static findById = async (db: LobeChatDatabase, id: string) => {
@@ -59,10 +59,12 @@ export class AssistantModel {
   };
 
   static findByUserId = async (db: LobeChatDatabase, userId: string) => {
-    return db.query.assistant.findMany({ where: eq(assistant.userId, userId) });
+    return db.query.assistant.findMany({
+      where: eq(assistant.authorUid, userId)
+    });
   };
 
-  static findByCategory = async (db: LobeChatDatabase, category: number) => {
+  static findByCategory = async (db: LobeChatDatabase, category: string) => {
     return db.query.assistant.findMany({ where: eq(assistant.category, category) });
   };
 
@@ -72,14 +74,26 @@ export class AssistantModel {
     });
   };
 
-  static search = async (db: LobeChatDatabase, keywords: string) => {
+  static search = async (db: LobeChatDatabase, keywords: string, category: string = '') => {
     const keywordPattern = `%${keywords.toLowerCase()}%`;
     return db.query.assistant.findMany({
       where: sql`
-        LOWER(${assistant.authorName}) LIKE ${keywordPattern}
+        (LOWER(${assistant.authorName}) LIKE ${keywordPattern}
         OR LOWER(${assistant.title}) LIKE ${keywordPattern}
         OR LOWER(${assistant.description}) LIKE ${keywordPattern}
-        OR LOWER(${assistant.tags}::text) LIKE ${keywordPattern}
+        OR LOWER(${assistant.tags}::text) LIKE ${keywordPattern})
+        AND (${category} = '' OR ${assistant.category} = ${category})
+      `,
+    });
+  };
+
+  static findRandomByCategoryAndTags = async (db: LobeChatDatabase, category: string, tags: string[]) => {
+    return db.query.assistant.findMany({
+      limit: 3,
+      orderBy: sql`RANDOM()`,
+      where: sql`
+        ${assistant.category} = ${category}
+        AND ${assistant.tags}::jsonb @> ${JSON.stringify(tags)}::jsonb
       `,
     });
   };

@@ -32,8 +32,8 @@ const List = memo<ListProps>(({ category, mobile, searchKeywords, items = [] }) 
     };
   }, [items, mobile]);
 
+  if (!items || items?.length === 0) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
   if (searchKeywords) {
-    if (!items || items?.length === 0) return <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />;
     return (
       <>
         <SearchResultCount count={all.length} keyword={searchKeywords} />
@@ -45,7 +45,7 @@ const List = memo<ListProps>(({ category, mobile, searchKeywords, items = [] }) 
               href={urlJoin('/discover/assistant/', item.identifier)}
               key={item.identifier}
               showCategory
-              variant={'compact'}
+              mobile={mobile}
               {...item}
             />
           )}
@@ -61,6 +61,8 @@ const List = memo<ListProps>(({ category, mobile, searchKeywords, items = [] }) 
     <>
       <VirtuosoGridList
         data={all}
+        rows={5}
+        // maxItemWidth={230}
         initialItemCount={12}
         itemContent={(_, item) => (
           <Card
@@ -68,6 +70,7 @@ const List = memo<ListProps>(({ category, mobile, searchKeywords, items = [] }) 
             key={item.identifier}
             showCategory={!category}
             variant={'default'}
+            mobile={mobile}
             {...item}
           />
         )}

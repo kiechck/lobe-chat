@@ -10,7 +10,7 @@ import { Flexbox } from 'react-layout-kit';
 import urlJoin from 'url-join';
 
 import { useQueryRoute } from '@/hooks/useQueryRoute';
-import { DiscoverTab } from '@/types/discover';
+import { AssistantCategory } from '@/types/discover';
 
 import { MAX_WIDTH } from '../../../features/const';
 import { useNav } from '../../../features/useNav';
@@ -57,14 +57,14 @@ const Nav = memo(() => {
     }
   });
 
-  const isHome = pathname === '/discover';
+  const isHome = pathname === '/discover/assistants';
   const isProviders = pathname === '/discover/providers';
 
   const navBar = items
     .map((item: any) => {
       const isActive = item.key === activeKey;
 
-      const href = item.key === DiscoverTab.Home ? '/discover' : urlJoin('/discover', item.key);
+      const href = item.key === AssistantCategory.All ? '/discover/assistants' : urlJoin('/discover/assistants', item.key);
 
       return (
         <Link

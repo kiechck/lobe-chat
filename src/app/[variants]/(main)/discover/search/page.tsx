@@ -13,10 +13,12 @@ import AssistantsResult from './features/AssistantsResult';
 import ModelsResult from './features/ModelsResult';
 import PluginsResult from './features/PluginsResult';
 import ProvidersResult from './features/ProvidersResult';
+import { AssistantCategory } from '@/types/discover';
 
 type Props = PageProps<
   { variants: string },
   {
+    category?: AssistantCategory;
     hl?: Locales;
     q?: string;
     type?: 'assistants' | 'plugins' | 'models' | 'providers';
@@ -25,10 +27,11 @@ type Props = PageProps<
 
 const getSharedProps = async (props: Props) => {
   const searchParams = await props.searchParams;
-  const { q, type = 'assistants' } = searchParams;
+  const { q, type = 'assistants', category } = searchParams;
   const { isMobile, locale: hl } = await RouteVariants.getVariantsFromProps(props);
   const { t, locale } = await translation('metadata', searchParams?.hl || hl);
   return {
+    category,
     isMobile,
     locale,
     q,
@@ -50,7 +53,7 @@ export const generateMetadata = async (props: Props) => {
 };
 
 const Page = async (props: Props) => {
-  const { locale, t, q, type, isMobile } = await getSharedProps(props);
+  const { locale, t, q, type, category, isMobile } = await getSharedProps(props);
 
   if (!q) redirect(urlJoin(`/discover`, type));
   const keywords = decodeURIComponent(q);
@@ -69,7 +72,7 @@ const Page = async (props: Props) => {
   return (
     <>
       <StructuredData ld={ld} />
-      {type === 'assistants' && <AssistantsResult locale={locale} mobile={isMobile} q={keywords} />}
+      {type === 'assistants' && <AssistantsResult category={category} locale={locale} mobile={isMobile} q={keywords} />}
       {type === 'plugins' && <PluginsResult locale={locale} mobile={isMobile} q={keywords} />}
       {type === 'models' && <ModelsResult locale={locale} mobile={isMobile} q={keywords} />}
       {type === 'providers' && <ProvidersResult locale={locale} mobile={isMobile} q={keywords} />}

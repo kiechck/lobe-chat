@@ -120,6 +120,8 @@ export interface ChatMessageAction {
     id?: string,
     action?: string,
   ) => AbortController | undefined;
+
+  setRoleFirstMsg: (msg?: string) => void;
 }
 
 export const chatMessage: StateCreator<
@@ -404,4 +406,6 @@ export const chatMessage: StateCreator<
       window.removeEventListener('beforeunload', preventLeavingFn);
     }
   },
+
+  setRoleFirstMsg: (msg) => set({ roleFirstMsg: msg }),
 });

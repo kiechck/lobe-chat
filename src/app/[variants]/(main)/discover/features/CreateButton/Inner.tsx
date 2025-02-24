@@ -18,10 +18,10 @@ const Inner = memo(() => {
         style={{ height: 'auto', marginBottom: 24, width: '100%' }}
         width={1602}
       />
-      <h3>
+      {/* <h3>
         <Tag color={'cyan'}>{t('createGuide.func1.tag')}</Tag>
         <span>{t('createGuide.func1.title')}</span>
-      </h3>
+      </h3> */}
       <p>
         <kbd>
           <Icon icon={Settings} />
@@ -33,7 +33,7 @@ const Inner = memo(() => {
         </kbd>
         {t('createGuide.func1.desc2')}
       </p>
-      <Divider />
+      {/* <Divider />
       <h3>
         <Tag color={'cyan'}>{t('createGuide.func2.tag')}</Tag>
         <span>{t('createGuide.func2.title')}</span>
@@ -46,7 +46,7 @@ const Inner = memo(() => {
         type={'primary'}
       >
         {t('createGuide.func2.button')}
-      </Button>
+      </Button> */}
     </Typography>
   );
 });

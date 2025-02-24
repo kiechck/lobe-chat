@@ -8,7 +8,7 @@ export const assistant = pgTable('assistant', {
   authorUid: text('author_uid').notNull(),
   authorAvatar: text('author_avatar').notNull(),
   category: text('category').notNull(),
-  tags: jsonb('tags').notNull(),
+  tags: jsonb('tags').$type<string[]>().notNull().default([]),
   displayMode: text('display_mode').default('chat').notNull(),
   model: text('model'),
   frequencyPenalty: integer('frequency_penalty'),
@@ -20,7 +20,7 @@ export const assistant = pgTable('assistant', {
   title: text('title').notNull(),
   description: text('description').notNull(),
   systemRole: text('system_role').notNull(),
-  roleFirstMsgs: jsonb('role_first_msgs').notNull(),
+  roleFirstMsgs: jsonb('role_first_msgs').$type<string[]>().default([]),
   ...timestamps,
 });
 

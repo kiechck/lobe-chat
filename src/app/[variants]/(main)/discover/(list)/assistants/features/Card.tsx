@@ -164,28 +164,27 @@ const AssistantCard = memo<AssistantCardProps>(
           </Link>
 
           <Flexbox gap={6} horizontal style={{ flexWrap: 'wrap' }}>
-            {showCategory && categoryItem ? (
+            {showCategory && categoryItem && (
               <Link href={urlJoin('/discover/assistants', categoryItem.key)}>
                 <Tag icon={categoryItem.icon} style={{ margin: 0 }}>
                   {categoryItem.label}
                 </Tag>
               </Link>
-            ) : (
-              tags
-                .slice(0, 4)
-                .filter(Boolean)
-                .map((tag: string, index) => {
-                  const url = qs.stringifyUrl({
-                    query: { q: tag, type: 'assistants' },
-                    url: '/discover/search',
-                  });
-                  return (
-                    <Link href={url} key={index}>
-                      <Tag style={{ margin: 0 }}>{startCase(tag).trim()}</Tag>
-                    </Link>
-                  );
-                })
             )}
+            {tags
+              .slice(0, 4)
+              .filter(Boolean)
+              .map((tag: string, index) => {
+                const url = qs.stringifyUrl({
+                  query: { q: tag, type: 'assistants' },
+                  url: '/discover/search',
+                });
+                return (
+                  <Link href={url} key={index}>
+                    <Tag style={{ margin: 0 }}>{startCase(tag).trim()}</Tag>
+                  </Link>
+                );
+              })}
           </Flexbox>
         </Flexbox>
       </Flexbox>

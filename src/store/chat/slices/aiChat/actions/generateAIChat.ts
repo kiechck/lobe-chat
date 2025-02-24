@@ -135,7 +135,15 @@ export const generateAIChat: StateCreator<
   },
 
   sendMessage: async ({ message, files, onlyAddUserMessage, isWelcomeQuestion }) => {
-    const { internal_coreProcessMessage, activeTopicId, activeId, activeThreadId } = get();
+    // const { internal_coreProcessMessage, activeTopicId, activeId, activeThreadId } = get();
+    const {
+      internal_coreProcessMessage,
+      activeTopicId,
+      activeId,
+      activeThreadId,
+      roleFirstMsg,
+      setRoleFirstMsg
+    } = get();
     if (!activeId) return;
 
     const fileIdList = files?.map((f) => f.id);
@@ -146,6 +154,18 @@ export const generateAIChat: StateCreator<
     if (!message && !hasFile) return;
 
     set({ isCreatingMessage: true }, false, n('creatingMessage/start'));
+
+    // 在创建用户消息前添加开场白逻辑
+    const chats = chatSelectors.activeBaseChats(get());
+    if (roleFirstMsg && chats.length === 0) {
+      await get().internal_createMessage({
+        content: roleFirstMsg,
+        role: 'assistant',
+        sessionId: activeId,
+        topicId: activeTopicId
+      });
+      setRoleFirstMsg(undefined); // 使用通过get()获得的方法
+    }
 
     const newMessage: CreateMessageParams = {
       content: message,
@@ -167,7 +187,7 @@ export const generateAIChat: StateCreator<
     // if autoCreateTopic is enabled, check to whether we need to create a topic
     if (!onlyAddUserMessage && !activeTopicId && agentConfig.enableAutoCreateTopic) {
       // check activeTopic and then auto create topic
-      const chats = chatSelectors.activeBaseChats(get());
+      // const chats = chatSelectors.activeBaseChats(get());
 
       // we will add two messages (user and assistant), so the finial length should +2
       const featureLength = chats.length + 2;

@@ -1,6 +1,6 @@
 import { useQueryState } from 'nuqs';
 
-import { DiscoverTab } from '@/types/discover';
+import { DiscoverTab, AssistantCategory } from '@/types/discover';
 
 export const useDiscoverTab = () => {
   const [type] = useQueryState('type', {
@@ -9,4 +9,13 @@ export const useDiscoverTab = () => {
   });
 
   return type as DiscoverTab;
+};
+
+export const useAssistantCategory = () => {
+  const [type] = useQueryState('type', {
+    clearOnDefault: true,
+    defaultValue: AssistantCategory.All,
+  });
+
+  return type as AssistantCategory;
 };

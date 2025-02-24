@@ -7,9 +7,9 @@ import Category from '../features/Category';
 const Layout = ({ children }: PropsWithChildren) => {
   return (
     <Flexbox gap={24} horizontal style={{ position: 'relative' }} width={'100%'}>
-      <CategoryContainer>
+      {/* <CategoryContainer>
         <Category />
-      </CategoryContainer>
+      </CategoryContainer> */}
       <Flexbox flex={1} gap={16}>
         {children}
       </Flexbox>
